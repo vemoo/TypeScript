@@ -14342,6 +14342,16 @@ namespace ts {
                         }
                         return false;
                     }
+                    else {
+                        // This ensures that enums with the same name and member names
+                        // are only related if the values are also the same
+                        const sourceValue = getEnumMemberValue(<EnumMember>property.valueDeclaration);
+                        const targetValue = getEnumMemberValue(<EnumMember>targetProperty.valueDeclaration);
+                        if (sourceValue !== targetValue) {
+                            enumRelation.set(id, RelationComparisonResult.Failed);
+                            return false;
+                        }
+                    }
                 }
             }
             enumRelation.set(id, RelationComparisonResult.Succeeded);
